@@ -50,7 +50,7 @@ public class TopDownCarController : MonoBehaviour
         if (velocityVsUp > m_Max_Speed && accelerationInput > 0)
             return;
 
-        if (velocityVsUp > -m_Max_Speed * 0.5f && accelerationInput < 0)
+        if (velocityVsUp > -m_Max_Speed * 0.2f && accelerationInput < 0)
             return;
 
         if(m_RigidBody.velocity.sqrMagnitude > m_Max_Speed * m_Max_Speed && accelerationInput > 0)
