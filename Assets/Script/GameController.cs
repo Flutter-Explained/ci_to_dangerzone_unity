@@ -22,9 +22,7 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        UserData.RegistrationPolicy = InteropRegistrationPolicy.Automatic;
-        var host = debug ? "http://localhost:3000" : "https://firebase.com/";
-        StartCoroutine(GetRequest(host + "/obstacles.lua"));
+
     }
 
     // Start is called before the first frame update
@@ -32,45 +30,6 @@ public class GameController : MonoBehaviour
     {
         stopwatch.Start();
         timeTracker.text = "Timer: 00:00:00";
-    }
-
-
-    private static int Mul(int a, int b)
-    {
-        return a * b;
-    }
-
-    IEnumerator GetRequest(string uri)
-    {
-        using UnityWebRequest webRequest = UnityWebRequest.Get(uri);
-        // Request and wait for the desired page.
-        yield return webRequest.SendWebRequest();
-
-        string[] pages = uri.Split('/');
-        int page = pages.Length - 1;
-
-        switch (webRequest.result)
-        {
-            case UnityWebRequest.Result.ConnectionError:
-            case UnityWebRequest.Result.DataProcessingError:
-                Debug.LogError(pages[page] + ": Error: " + webRequest.error);
-                break;
-            case UnityWebRequest.Result.ProtocolError:
-                Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
-                break;
-            case UnityWebRequest.Result.Success:
-                Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
-                Script script = new();
-                script.Globals["Mul"] = (Func<int, int, int>)Mul;
-                script.DoString(webRequest.downloadHandler.text);
-                DynValue luaHelloWorldFunction = script.Globals.Get("helloWorld");
-                DynValue res = script.Call(luaHelloWorldFunction);
-                Debug.Log(res.Number);
-
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-
-                break;
-        }
     }
 
     // Update is called once per frame
