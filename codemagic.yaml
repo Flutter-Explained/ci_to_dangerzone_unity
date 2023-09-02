@@ -1,0 +1,33 @@
+workflows:  
+  sign-upload-only-workflow:
+    name: Sign and upload script Only Workflow
+    max_build_duration: 10
+    working_directory: tools/signing
+    environment:
+      flutter: default
+      groups:
+        - firebase
+        - Signing
+    triggering:
+      events:
+        - push
+      branch_patterns: 
+        - pattern: main
+      cancel_previous_builds: true
+    when:
+      changeset:
+        includes:
+          - 'game_scripts/*'    
+    scripts:
+      - name: get packages needed by signing script
+        script: |
+          dart pub get 
+      - name: sign lua script file
+        script: |
+          dart bin/signing.dart ../../game_scripts/obstacles.lua
+          mkdir -p build/web
+          cp game_scripts/obstacles.lua build/web/
+          cp signature build/web/   
+      - name: Publish to Firebase Hosting
+        script: |
+          firebase deploy --token "$FIREBASE_TOKEN"

@@ -1,14 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
-using JetBrains.Annotations;
 using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Interop;
 using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -50,9 +46,11 @@ public class LoadLuaScript : MonoBehaviour
             case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.DataProcessingError:
                 Debug.LogError(pages[page] + ": Error: " + webRequestScript.error);
+                yield return null;
                 break;
             case UnityWebRequest.Result.ProtocolError:
                 Debug.LogError(pages[page] + ": HTTP Error: " + webRequestScript.error);
+                yield return null;
                 break;
             case UnityWebRequest.Result.Success:
                 Debug.Log(pages[page] + ":\nReceived: " + webRequestScript.downloadHandler.text);
@@ -65,33 +63,44 @@ public class LoadLuaScript : MonoBehaviour
             case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.DataProcessingError:
                 Debug.LogError(pages[page] + ": Error: " + webRequestSignature.error);
+                yield return null;
                 break;
             case UnityWebRequest.Result.ProtocolError:
                 Debug.LogError(pages[page] + ": HTTP Error: " + webRequestSignature.error);
+                yield return null;
                 break;
             case UnityWebRequest.Result.Success:
                 Debug.Log(pages[page] + ":\nReceived: " + webRequestSignature.downloadHandler.text);
                 signature = webRequestSignature.downloadHandler.text;
                 break;
         }
-        
+
         string publicKey = ReadString();
 
-        VerifyScriptWithSignatureAndPublicKey(signature, publicKey, script);
+        bool verified = VerifyScriptWithSignatureAndPublicKey(signature, publicKey, script);
 
+        if (verified)
+        {
+            // Load Lua Script
+            Debug.Log($"Verified: {verified}");
+        }
+        else
+        {
+            Debug.LogError("The Script is not verified and cannot be loaded!");
+        }
     }
 
-    private void VerifyScriptWithSignatureAndPublicKey(string signature, string publicKey, string script)
+    private bool VerifyScriptWithSignatureAndPublicKey(string signature, string publicKeyString, string script)
     {
-        var tPublicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKey));
+        var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyString));
         var scriptBytes = Encoding.UTF8.GetBytes(script);
-        var signatureBytes =  Convert.FromBase64String(signature);
+        var signatureBytes = Convert.FromBase64String(signature);
+
         ISigner signer = SignerUtilities.GetSigner("SHA-256withRSA");
-        signer.Init(false, tPublicKey);
+        signer.Init(false, publicKey);
         signer.BlockUpdate(scriptBytes, 0, scriptBytes.Length);
         var verified = signer.VerifySignature(signatureBytes);
-        Debug.Log($"Verified: {verified}");
-        Debug.Log(script);
+        return verified;
     }
 
     string ReadString()
