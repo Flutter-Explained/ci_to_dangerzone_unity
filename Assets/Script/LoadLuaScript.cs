@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 public class LoadLuaScript : MonoBehaviour
 {
-    bool debug = true;
+    bool debug = false;
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,7 +26,7 @@ public class LoadLuaScript : MonoBehaviour
 
     IEnumerator GetRequest()
     {
-        var host = debug ? "http://localhost:3000" : "https://firebase.com/";
+        var host = debug ? "http://localhost:3000" : "https://ci-cd-dangerzone-unity.web.app";
         var uriScript = host + "/obstacles.lua";
         var uriSignature = host + "/signature";
         string script = "";
@@ -38,22 +38,18 @@ public class LoadLuaScript : MonoBehaviour
         yield return webRequestScript.SendWebRequest();
         yield return webRequestSignature.SendWebRequest();
 
-        string[] pages = uriScript.Split('/');
-        int page = pages.Length - 1;
-
         switch (webRequestScript.result)
         {
             case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.DataProcessingError:
-                Debug.LogError(pages[page] + ": Error: " + webRequestScript.error);
-                yield return null;
+                Debug.LogError("uriScript: Error: " + webRequestScript.error);
                 break;
             case UnityWebRequest.Result.ProtocolError:
-                Debug.LogError(pages[page] + ": HTTP Error: " + webRequestScript.error);
-                yield return null;
+                Debug.LogError("uriScript: HTTP Error: " + webRequestScript.error);
+                Debug.LogError(uriScript);
                 break;
             case UnityWebRequest.Result.Success:
-                Debug.Log(pages[page] + ":\nReceived: " + webRequestScript.downloadHandler.text);
+                Debug.Log("uriScript:\nReceived: " + webRequestScript.downloadHandler.text);
                 script = webRequestScript.downloadHandler.text;
                 break;
         }
@@ -62,15 +58,15 @@ public class LoadLuaScript : MonoBehaviour
         {
             case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.DataProcessingError:
-                Debug.LogError(pages[page] + ": Error: " + webRequestSignature.error);
+                Debug.LogError("uriSignature: Error: " + webRequestSignature.error);
                 yield return null;
                 break;
             case UnityWebRequest.Result.ProtocolError:
-                Debug.LogError(pages[page] + ": HTTP Error: " + webRequestSignature.error);
+                Debug.LogError("uriSignature: HTTP Error: " + webRequestSignature.error);
                 yield return null;
                 break;
             case UnityWebRequest.Result.Success:
-                Debug.Log(pages[page] + ":\nReceived: " + webRequestSignature.downloadHandler.text);
+                Debug.Log("uriSignature:\nReceived: " + webRequestSignature.downloadHandler.text);
                 signature = webRequestSignature.downloadHandler.text;
                 break;
         }
