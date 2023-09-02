@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MoonSharp.Interpreter;
 using UnityEngine;
 
 public class ObstacleController : MonoBehaviour
@@ -9,11 +10,6 @@ public class ObstacleController : MonoBehaviour
 
     void Awake(){
         gameController = game.GetComponent<GameController>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     void OnCollisionEnter2D(Collision2D collision){

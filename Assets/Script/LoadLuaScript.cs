@@ -11,17 +11,17 @@ using UnityEngine.Networking;
 
 public class LoadLuaScript : MonoBehaviour
 {
-    bool debug = false;
+    bool debug = true;
+    public Script luaScript;
+    [SerializeField] private GameObject obstacleSpawner;
+    ObstacleSpawner obstacleSpawnerScript;
+
     // Start is called before the first frame update
     void Awake()
     {
+        obstacleSpawnerScript = obstacleSpawner.GetComponent<ObstacleSpawner>();
         UserData.RegistrationPolicy = InteropRegistrationPolicy.Automatic;
         StartCoroutine(GetRequest());
-    }
-
-    private static int Mul(int a, int b)
-    {
-        return a * b;
     }
 
     IEnumerator GetRequest()
@@ -31,6 +31,7 @@ public class LoadLuaScript : MonoBehaviour
         var uriSignature = host + "/signature";
         string script = "";
         string signature = "";
+
 
         using UnityWebRequest webRequestScript = UnityWebRequest.Get(uriScript);
         using UnityWebRequest webRequestSignature = UnityWebRequest.Get(uriSignature);
@@ -79,6 +80,14 @@ public class LoadLuaScript : MonoBehaviour
         {
             // Load Lua Script
             Debug.Log($"Verified: {verified}");
+
+            Script luaScript = new();
+            luaScript.DoString(script);
+            luaScript.Globals["mkObstacle"] = (Func<int, int, int>)obstacleSpawnerScript.SpawnObstacles;
+
+
+            DynValue luaDoObstaclesFunction = luaScript.Globals.Get("doObstacles");
+            luaScript.Call(luaDoObstaclesFunction);
         }
         else
         {
