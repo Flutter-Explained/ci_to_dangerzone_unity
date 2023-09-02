@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 public class LoadLuaScript : MonoBehaviour
 {
-    bool debug = true;
+    bool debug = false;
     public Script luaScript;
     [SerializeField] private GameObject obstacleSpawner;
     ObstacleSpawner obstacleSpawnerScript;

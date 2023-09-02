@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using MoonSharp.Interpreter;
 using UnityEngine;
 
-public class ObstacleController : MonoBehaviour
+public class ObstacleCollisionHandler : MonoBehaviour
 {
     public GameObject game;
     private GameController gameController;
@@ -11,9 +10,9 @@ public class ObstacleController : MonoBehaviour
     void Awake(){
         gameController = game.GetComponent<GameController>();
     }
-
+    
     void OnCollisionEnter2D(Collision2D collision){
-        if(collision.gameObject.CompareTag("Player")){
+        if(collision.gameObject.CompareTag("Obstacle")){
             gameController.GameOver("Crashed!");
         }
     }

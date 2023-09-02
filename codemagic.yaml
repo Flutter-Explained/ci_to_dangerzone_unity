@@ -24,9 +24,9 @@ workflows:
           dart pub get 
       - name: sign lua script file
         script: |
-          dart bin/signing.dart ../../game_scripts/obstacles.lua
+          dart bin/signing.dart game_scripts/obstacles.lua
           mkdir -p build/web
-          cp ../../game_scripts/obstacles.lua build/web/
+          cp game_scripts/obstacles.lua build/web/
           cp signature build/web/   
       - name: Publish to Firebase Hosting
         script: |
