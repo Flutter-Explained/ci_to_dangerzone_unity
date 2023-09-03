@@ -8,12 +8,14 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class LoadLuaScript : MonoBehaviour
 {
     bool debug = false;
     public Script luaScript;
     [SerializeField] private GameObject obstacleSpawner;
+    [SerializeField] private TextAsset PublicKeyTextAsset;
     ObstacleSpawner obstacleSpawnerScript;
 
     // Start is called before the first frame update
@@ -110,10 +112,6 @@ public class LoadLuaScript : MonoBehaviour
 
     string ReadString()
     {
-        string path = "Assets/Resources/public_key";
-        StreamReader reader = new(path);
-        string result = reader.ReadToEnd();
-        reader.Close();
-        return result;
+        return PublicKeyTextAsset.text;
     }
 }

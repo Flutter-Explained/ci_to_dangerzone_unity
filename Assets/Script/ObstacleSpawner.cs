@@ -10,7 +10,7 @@ public class ObstacleSpawner : MonoBehaviour
     // Error return -1
     public int SpawnObstacles(int x, int y){
         GameObject newObstacle = Instantiate(obstaclePrefab);
-        newObstacle.transform.position = new Vector2(x, y);
+        newObstacle.transform.position = new Vector3(x, y, -1);
         return 1;
     }
     
