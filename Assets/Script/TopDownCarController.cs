@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,9 +28,34 @@ public class TopDownCarController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        ApplyMapBoundries();
         ApplyEngineForce();
         KillOrthogonalVelocity();
         ApplySteering();
+    }
+
+    private void ApplyMapBoundries()
+    {
+        if (transform.position.y <= -13.5)
+        {
+            m_RigidBody.velocity = Vector3.zero;
+            m_RigidBody.AddForce(Vector2.up * 150, ForceMode2D.Force);
+        }
+        else if (transform.position.y >= 13.5)
+        {
+            m_RigidBody.velocity = Vector3.zero;
+            m_RigidBody.AddForce(Vector2.down * 150, ForceMode2D.Force);
+        }
+        else if (transform.position.x >= 22)
+        {
+            m_RigidBody.velocity = Vector3.zero;
+            m_RigidBody.AddForce(Vector2.left * 150, ForceMode2D.Force);
+        }
+        else if (transform.position.x <= -22)
+        {
+            m_RigidBody.velocity = Vector3.zero;
+            m_RigidBody.AddForce(Vector2.right * 150, ForceMode2D.Force);
+        }
     }
 
     private void ApplySteering()
@@ -50,10 +76,10 @@ public class TopDownCarController : MonoBehaviour
         if (velocityVsUp > m_Max_Speed && accelerationInput > 0)
             return;
 
-        if (velocityVsUp > -m_Max_Speed * 0.2f && accelerationInput < 0)
+        if (velocityVsUp < -m_Max_Speed * 0.2f && accelerationInput < 0)
             return;
 
-        if(m_RigidBody.velocity.sqrMagnitude > m_Max_Speed * m_Max_Speed && accelerationInput > 0)
+        if (m_RigidBody.velocity.sqrMagnitude > m_Max_Speed * m_Max_Speed && accelerationInput > 0)
             return;
 
         if (accelerationInput == 0)
