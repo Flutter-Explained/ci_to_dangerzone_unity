@@ -49,6 +49,7 @@ public class WeatherController : MonoBehaviour
         var main = particleSystem.main;
         main.startLifetime = 1f;
         main.gravityModifier = 2f;
+        main.startSpeed = 30f;
         particleSystem.Play();
     }
 

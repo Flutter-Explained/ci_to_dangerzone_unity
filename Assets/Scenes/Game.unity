@@ -420,6 +420,7 @@ MonoBehaviour:
   debug: 0
   obstacleSpawner: {fileID: 1531654543}
   weatherSpawnerGO: {fileID: 1781249726}
+  dayNightGO: {fileID: 739319791}
   PublicKeyTextAsset: {fileID: 4900000, guid: 74ad5a509888945ac94fbd6d9cb9b20c, type: 3}
 --- !u!1 &519420028
 GameObject:

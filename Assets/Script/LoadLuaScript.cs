@@ -19,15 +19,18 @@ public class LoadLuaScript : MonoBehaviour
     [Header("GameObjects")]
     [SerializeField] private GameObject obstacleSpawner;
     [SerializeField] private GameObject weatherSpawnerGO;
+    [SerializeField] private GameObject dayNightGO;
     [SerializeField] private TextAsset PublicKeyTextAsset;
     ObstacleSpawner obstacleSpawnerScript;
     WeatherController weatherControllerScript;
+    WorldLightScript worldLightScript;
 
     // Start is called before the first frame update
     void Awake()
     {
         obstacleSpawnerScript = obstacleSpawner.GetComponent<ObstacleSpawner>();
         weatherControllerScript = weatherSpawnerGO.GetComponent<WeatherController>();
+        worldLightScript = dayNightGO.GetComponent<WorldLightScript>();
         UserData.RegistrationPolicy = InteropRegistrationPolicy.Automatic;
         StartCoroutine(GetRequest());
     }
@@ -92,11 +95,15 @@ public class LoadLuaScript : MonoBehaviour
             luaScript.DoString(script);
             luaScript.Globals["mkObstacle"] = (Func<int, int, int>)obstacleSpawnerScript.SpawnObstacles;
             luaScript.Globals["mkWeather"] = (Func<int, int>)weatherControllerScript.StartWeather;
+            luaScript.Globals["mkDayNight"] = (Func<int, int>)worldLightScript.StartDayNight;
 
             DynValue luaDoObstaclesFunction = luaScript.Globals.Get("doObstacles");
             DynValue luaDoWeatherFunction = luaScript.Globals.Get("doWeather");
+            DynValue luaDoDayNightFunction = luaScript.Globals.Get("doDayNight");
+            
             luaScript.Call(luaDoObstaclesFunction);
             luaScript.Call(luaDoWeatherFunction);
+            luaScript.Call(luaDoDayNightFunction);
         }
         else
         {
