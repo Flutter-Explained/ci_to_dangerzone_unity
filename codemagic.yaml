@@ -17,7 +17,7 @@ workflows:
     when:
       changeset:
         includes:
-          - 'game_scripts/*'    
+          - 'tools/signing/game_scripts/*'    
     scripts:
       - name: get packages needed by signing script
         script: |
