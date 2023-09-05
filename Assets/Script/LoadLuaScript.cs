@@ -12,17 +12,22 @@ using UnityEngine.UI;
 
 public class LoadLuaScript : MonoBehaviour
 {
-    bool debug = false;
+    [Header("Meta Data")]
+    [SerializeField] bool debug = false;
     public Script luaScript;
+
+    [Header("GameObjects")]
     [SerializeField] private GameObject obstacleSpawner;
+    [SerializeField] private GameObject weatherSpawnerGO;
     [SerializeField] private TextAsset PublicKeyTextAsset;
     ObstacleSpawner obstacleSpawnerScript;
-    WeatherController weatherController;
+    WeatherController weatherControllerScript;
 
     // Start is called before the first frame update
     void Awake()
     {
         obstacleSpawnerScript = obstacleSpawner.GetComponent<ObstacleSpawner>();
+        weatherControllerScript = weatherSpawnerGO.GetComponent<WeatherController>();
         UserData.RegistrationPolicy = InteropRegistrationPolicy.Automatic;
         StartCoroutine(GetRequest());
     }
@@ -53,7 +58,6 @@ public class LoadLuaScript : MonoBehaviour
                 Debug.LogError(uriScript);
                 break;
             case UnityWebRequest.Result.Success:
-                Debug.Log("uriScript:\nReceived: " + webRequestScript.downloadHandler.text);
                 script = webRequestScript.downloadHandler.text;
                 break;
         }
@@ -70,7 +74,7 @@ public class LoadLuaScript : MonoBehaviour
                 yield return null;
                 break;
             case UnityWebRequest.Result.Success:
-                Debug.Log("uriSignature:\nReceived: " + webRequestSignature.downloadHandler.text);
+                // Debug.Log("uriSignature:\nReceived: " + webRequestSignature.downloadHandler.text);
                 signature = webRequestSignature.downloadHandler.text;
                 break;
         }
@@ -87,8 +91,7 @@ public class LoadLuaScript : MonoBehaviour
             Script luaScript = new();
             luaScript.DoString(script);
             luaScript.Globals["mkObstacle"] = (Func<int, int, int>)obstacleSpawnerScript.SpawnObstacles;
-            luaScript.Globals["mkWeather"] = (Func<int, int>)weatherController.StartWeather;
-
+            luaScript.Globals["mkWeather"] = (Func<int, int>)weatherControllerScript.StartWeather;
 
             DynValue luaDoObstaclesFunction = luaScript.Globals.Get("doObstacles");
             DynValue luaDoWeatherFunction = luaScript.Globals.Get("doWeather");
@@ -106,10 +109,6 @@ public class LoadLuaScript : MonoBehaviour
         var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyString));
         var scriptBytes = Encoding.UTF8.GetBytes(script);
         var signatureBytes = Convert.FromBase64String(signature);
-
-        Debug.Log(Convert.FromBase64String(publicKeyString));
-        Debug.Log(script);
-        Debug.Log(signature);
 
         ISigner signer = SignerUtilities.GetSigner("SHA-256withRSA");
         signer.Init(false, publicKey);

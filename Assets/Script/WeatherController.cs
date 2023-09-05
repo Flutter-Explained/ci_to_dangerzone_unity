@@ -17,6 +17,7 @@ public class WeatherController : MonoBehaviour
     #region Start Weather Effects
 
     public int StartWeather(int x){
+        Debug.Log("Test");
         if(x == 0){
             DeactivateWeather();
         } else if (x == 1){

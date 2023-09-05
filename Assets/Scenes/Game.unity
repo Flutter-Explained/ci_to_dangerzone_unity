@@ -417,7 +417,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6db4346c1f6a49b1a2498857671ce10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   obstacleSpawner: {fileID: 1531654543}
+  weatherSpawnerGO: {fileID: 1781249726}
   PublicKeyTextAsset: {fileID: 4900000, guid: 74ad5a509888945ac94fbd6d9cb9b20c, type: 3}
 --- !u!1 &519420028
 GameObject:
@@ -6729,8 +6731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3203b407107fc40caa6e800fb841a71b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snowMaterial: {fileID: 2100000, guid: 08a00b4fa69284ef8b3d941edaeb1a06, type: 2}
-  rainMaterial: {fileID: 2100000, guid: d5d370893add146edaf6e6cf67010922, type: 2}
+  snowMaterial: {fileID: 2100000, guid: d5d370893add146edaf6e6cf67010922, type: 2}
+  rainMaterial: {fileID: 2100000, guid: 08a00b4fa69284ef8b3d941edaeb1a06, type: 2}
 --- !u!1 &1928411691
 GameObject:
   m_ObjectHideFlags: 0
