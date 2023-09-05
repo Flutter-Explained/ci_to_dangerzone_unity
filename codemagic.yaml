@@ -17,7 +17,7 @@ workflows:
     when:
       changeset:
         includes:
-          - 'tools/signing/game_scripts/*'    
+          - 'game_scripts/*'    
     scripts:
       - name: get packages needed by signing script
         script: |
@@ -25,10 +25,8 @@ workflows:
       - name: sign lua script file
         script: |
           dart bin/signing.dart game_scripts/obstacles.lua
-          dart bin/signing.dart game_scripts/player_config.lua
           mkdir -p build/web
           cp game_scripts/obstacles.lua build/web/
-          cp game_scripts/player_config.lua build/web/
           cp signature build/web/   
       - name: Publish to Firebase Hosting
         script: |

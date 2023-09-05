@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class LoadLuaScript : MonoBehaviour
 {
-    bool debug = true;
+    bool debug = false;
     public Script luaScript;
     [SerializeField] private GameObject obstacleSpawner;
     [SerializeField] private TextAsset PublicKeyTextAsset;
