@@ -8,7 +8,7 @@ function doObstacles()
 end
 
 function doWeather()
-  mkWeather(1)
+  mkWeather(2)
 end
 
 function doDayNight()
