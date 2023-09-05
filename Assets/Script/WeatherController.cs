@@ -15,6 +15,18 @@ public class WeatherController : MonoBehaviour
     }
 
     #region Start Weather Effects
+
+    public int StartWeather(int x){
+        if(x == 0){
+            DeactivateWeather();
+        } else if (x == 1){
+            StartSnow();
+        } else if (x == 2){
+            StartRain();
+        }
+        return 1;
+    }
+    
     public void DeactivateWeather(){
         gameObject.SetActive(false);
     }

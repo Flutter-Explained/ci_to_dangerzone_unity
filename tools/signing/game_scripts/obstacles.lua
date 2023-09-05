@@ -6,3 +6,7 @@ function doObstacles()
   mkObstacle(2, 7);
   mkObstacle(-16, 2);
 end
+
+function doWeather()
+  mkWeather(1)
+end

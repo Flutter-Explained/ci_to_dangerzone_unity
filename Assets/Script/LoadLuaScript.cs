@@ -17,6 +17,7 @@ public class LoadLuaScript : MonoBehaviour
     [SerializeField] private GameObject obstacleSpawner;
     [SerializeField] private TextAsset PublicKeyTextAsset;
     ObstacleSpawner obstacleSpawnerScript;
+    WeatherController weatherController;
 
     // Start is called before the first frame update
     void Awake()
@@ -86,9 +87,11 @@ public class LoadLuaScript : MonoBehaviour
             Script luaScript = new();
             luaScript.DoString(script);
             luaScript.Globals["mkObstacle"] = (Func<int, int, int>)obstacleSpawnerScript.SpawnObstacles;
+            luaScript.Globals["mkWeather"] = (Func<int, int>)weatherController.StartWeather;
 
 
             DynValue luaDoObstaclesFunction = luaScript.Globals.Get("doObstacles");
+            DynValue luaDoWeatherFunction = luaScript.Globals.Get("doWeather");
             luaScript.Call(luaDoObstaclesFunction);
         }
         else
