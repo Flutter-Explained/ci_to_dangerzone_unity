@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class LoadLuaScript : MonoBehaviour
 {
-    bool debug = false;
+    bool debug = true;
     public Script luaScript;
     [SerializeField] private GameObject obstacleSpawner;
     [SerializeField] private TextAsset PublicKeyTextAsset;
@@ -102,6 +102,10 @@ public class LoadLuaScript : MonoBehaviour
         var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyString));
         var scriptBytes = Encoding.UTF8.GetBytes(script);
         var signatureBytes = Convert.FromBase64String(signature);
+
+        Debug.Log(Convert.FromBase64String(publicKeyString));
+        Debug.Log(script);
+        Debug.Log(signature);
 
         ISigner signer = SignerUtilities.GetSigner("SHA-256withRSA");
         signer.Init(false, publicKey);
