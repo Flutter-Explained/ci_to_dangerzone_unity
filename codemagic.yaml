@@ -14,10 +14,6 @@ workflows:
       branch_patterns: 
         - pattern: main
       cancel_previous_builds: true
-    when:
-      changeset:
-        includes:
-          - 'game_scripts/*'    
     scripts:
       - name: get packages needed by signing script
         script: |

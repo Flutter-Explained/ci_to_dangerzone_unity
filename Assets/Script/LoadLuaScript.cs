@@ -93,6 +93,7 @@ public class LoadLuaScript : MonoBehaviour
             DynValue luaDoObstaclesFunction = luaScript.Globals.Get("doObstacles");
             DynValue luaDoWeatherFunction = luaScript.Globals.Get("doWeather");
             luaScript.Call(luaDoObstaclesFunction);
+            luaScript.Call(luaDoWeatherFunction);
         }
         else
         {
