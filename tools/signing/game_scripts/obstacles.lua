@@ -3,6 +3,6 @@ function doObstacles()
   -- mkObstacle is defined by the host Dart env
   mkObstacle(10, -1);
   -- mkObstacle(15, 7);
-  -- mkObstacle(2, 7);
-  mkObstacle(-16, 2);
+  mkObstacle(2, 7);
+  -- mkObstacle(-16, 2);
 end
