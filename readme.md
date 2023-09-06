@@ -8,4 +8,4 @@ In our Unity project we receive the signature and .lua file and verify that the 
 [CI-CD-Dangerzone](https://github.com/codemagic-ci-cd/ci_to_dangerzone) by [maks](https://github.com/maks)
 
 ## This repository is supported and sponsored by [Codemagic](https://codemagic.io/)
-<a href="https://codemagic.io/"><img src={./images/codemagic.png} /></a>
+<a href="https://codemagic.io/"><img src={https://media.githubusercontent.com/media/Flutter-Explained/ci_to_dangerzone_unity/main/images/codemagic.png} /></a>
